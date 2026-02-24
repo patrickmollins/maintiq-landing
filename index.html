@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaintIQ — Intelligence for Maintenance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#032f49',
+                        dpsi: '#1d6aae',
+                        accent: '#ed7322'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            opacity: 0.08;
+        }
+        .hero-grid::before {
+            content: '';
+            position: absolute;
+            inset: -50%;
+            background-image:
+                radial-gradient(circle, #ed7322 1px, transparent 1px),
+                radial-gradient(circle, #1d6aae 1px, transparent 1px);
+            background-size: 60px 60px, 90px 90px;
+            background-position: 0 0, 30px 30px;
+            animation: gridDrift 20s linear infinite;
+        }
+        @keyframes gridDrift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+        .pulse-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(237, 115, 34, 0.3);
+            animation: pulseRing 4s ease-out infinite;
+        }
+        @keyframes pulseRing {
+            0% { transform: scale(0.8); opacity: 0.6; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        /* Subtle signal line illustration */
+        .signal-line {
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            animation: drawLine 2s ease forwards;
+        }
+        .signal-line.delay { animation-delay: 0.4s; }
+        .signal-line.delay2 { animation-delay: 0.8s; }
+        @keyframes drawLine {
+            to { stroke-dashoffset: 0; }
+        }
+
+        /* Stat counter */
+        .stat-block {
+            border-left: 3px solid #ed7322;
+        }
+    </style>
+</head>
+<body class="font-sans text-zinc-600 antialiased">
+
+    <!-- NAV -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-navy/90 backdrop-blur-md border-b border-white/10">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5">
+                <span class="w-8 h-8 flex-shrink-0">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2C9.4 2 4 7.4 4 14c0 4.1 2.1 7.8 5.3 9.9L9 28c0 .6.4 1 1 1h12c.6 0 1-.4 1-1l-.3-4.1C25.9 21.8 28 18.1 28 14c0-6.6-5.4-12-12-12z" fill="#032f49"/>
+                        <path d="M16 6c-1.5 0-2.8.8-3.5 2-.4.7-.5 1.5-.5 2.3 0 1.2.5 2.3 1.3 3.1l.7.7v2.9h4v-2.9l.7-.7c.8-.8 1.3-1.9 1.3-3.1 0-.8-.2-1.6-.5-2.3C18.8 6.8 17.5 6 16 6z" fill="#ed7322"/>
+                        <path d="M13 20h6v2h-6z" fill="#ed7322" opacity="0.6"/>
+                        <circle cx="22" cy="8" r="1.5" fill="#1d6aae"/>
+                        <circle cx="24" cy="13" r="1" fill="#1d6aae" opacity="0.6"/>
+                        <circle cx="10" cy="8" r="1.5" fill="#1d6aae"/>
+                        <circle cx="8" cy="13" r="1" fill="#1d6aae" opacity="0.6"/>
+                    </svg>
+                </span>
+                <span class="text-white font-bold text-lg tracking-tight">MaintIQ</span>
+            </a>
+            <a href="#early-access" class="text-sm text-white/60 hover:text-white transition-colors font-medium">Request Access →</a>
+        </div>
+    </nav>
+
+    <!-- ============ HERO (MaintIQ) ============ -->
+    <section class="relative bg-navy min-h-[90vh] flex items-center overflow-hidden pt-16">
+        <div class="hero-grid"></div>
+        <div class="pulse-ring w-96 h-96 top-1/4 -right-20 absolute"></div>
+        <div class="pulse-ring w-64 h-64 bottom-1/4 left-10 absolute" style="animation-delay: 2s;"></div>
+
+        <div class="relative z-10 max-w-6xl mx-auto px-6 py-24 md:py-32 text-center">
+            <div class="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-4 py-1.5 text-sm text-white/70 mb-8 backdrop-blur-sm">
+                <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                Now in Early Access
+            </div>
+            <div class="flex justify-center mb-8">
+                <span class="w-16 h-16 sm:w-20 sm:h-20">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2C9.4 2 4 7.4 4 14c0 4.1 2.1 7.8 5.3 9.9L9 28c0 .6.4 1 1 1h12c.6 0 1-.4 1-1l-.3-4.1C25.9 21.8 28 18.1 28 14c0-6.6-5.4-12-12-12z" fill="#032f49"/>
+                        <path d="M16 6c-1.5 0-2.8.8-3.5 2-.4.7-.5 1.5-.5 2.3 0 1.2.5 2.3 1.3 3.1l.7.7v2.9h4v-2.9l.7-.7c.8-.8 1.3-1.9 1.3-3.1 0-.8-.2-1.6-.5-2.3C18.8 6.8 17.5 6 16 6z" fill="#ed7322"/>
+                        <path d="M13 20h6v2h-6z" fill="#ed7322" opacity="0.6"/>
+                        <circle cx="22" cy="8" r="1.5" fill="#1d6aae"/>
+                        <circle cx="24" cy="13" r="1" fill="#1d6aae" opacity="0.6"/>
+                        <circle cx="10" cy="8" r="1.5" fill="#1d6aae"/>
+                        <circle cx="8" cy="13" r="1" fill="#1d6aae" opacity="0.6"/>
+                    </svg>
+                </span>
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight max-w-4xl mx-auto">
+                Maintenance Just Got an IQ Upgrade
+            </h1>
+            <p class="mt-6 text-lg sm:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+                AI-powered condition monitoring that diagnoses issues, cites manufacturer docs, and creates work orders — automatically.
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#early-access" class="inline-flex items-center justify-center bg-accent hover:bg-orange-600 text-white rounded-lg px-8 py-3.5 font-semibold text-lg transition-colors shadow-lg shadow-accent/20">
+                    Request Early Access
+                    <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+            <p class="mt-6 text-sm text-white/40">MaintIQ by DPSI · 35+ years in maintenance</p>
+        </div>
+    </section>
+
+    <!-- ============ SOCIAL PROOF STRIP ============ -->
+    <section class="bg-white border-b border-zinc-100 py-10">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20">
+                <div class="stat-block pl-4">
+                    <p class="text-3xl font-extrabold text-navy">35+</p>
+                    <p class="text-sm text-zinc-500 mt-0.5">Years in Maintenance</p>
+                </div>
+                <div class="stat-block pl-4">
+                    <p class="text-3xl font-extrabold text-navy">24/7</p>
+                    <p class="text-sm text-zinc-500 mt-0.5">Autonomous Monitoring</p>
+                </div>
+                <div class="stat-block pl-4">
+                    <p class="text-3xl font-extrabold text-navy">0</p>
+                    <p class="text-sm text-zinc-500 mt-0.5">Manual Steps to Work Order</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ THE PROBLEM — split layout ============ -->
+    <section class="py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-20 items-center fade-in">
+                <!-- Left: text -->
+                <div>
+                    <p class="text-sm font-semibold text-accent uppercase tracking-widest mb-5">The Problem</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-navy leading-snug">
+                        Your monitoring system is loud, dumb, and expensive
+                    </h2>
+                    <p class="mt-5 text-lg text-zinc-500 leading-relaxed">
+                        Traditional condition monitoring creates more work than it saves. Technicians spend hours chasing alerts that mean nothing — and miss the ones that do.
+                    </p>
+
+                    <div class="mt-10 space-y-6">
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 bg-red-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-lg">🔇</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-navy">Alert Fatigue</h3>
+                                <p class="mt-1 text-zinc-500">Too many false alarms. Teams learn to ignore them — including the real ones.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-lg">🔧</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-navy">Hours Wasted Diagnosing</h3>
+                                <p class="mt-1 text-zinc-500">Technicians dig through manuals and history to figure out what an alert actually means.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <div class="w-10 h-10 bg-orange-50 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <span class="text-lg">📋</span>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-navy">Manual Everything</h3>
+                                <p class="mt-1 text-zinc-500">Copy alert into email. Create work order by hand. Hope someone sees it in time.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: dumb alert callout visual -->
+                <div class="fade-in" style="transition-delay: 0.15s;">
+                    <div class="bg-zinc-50 rounded-2xl p-8 border border-zinc-200">
+                        <p class="text-xs font-semibold text-zinc-400 uppercase tracking-widest mb-5">A typical alert, right now</p>
+                        <div class="bg-white rounded-xl border border-red-200 shadow-sm p-5">
+                            <div class="flex items-start gap-3">
+                                <span class="text-red-400 text-xl mt-0.5">⚠️</span>
+                                <div>
+                                    <p class="font-mono text-sm text-red-700 font-semibold">ALERT — PUMP-2471-A</p>
+                                    <p class="font-mono text-sm text-red-600 mt-1">"Vibration exceeded threshold: 7.2 mm/s"</p>
+                                    <p class="mt-4 text-sm text-zinc-400 italic leading-relaxed">No diagnosis. No context. No recommended action. No work order. Just a number — and a technician left to figure out the rest.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- signal SVG illustration -->
+                        <div class="mt-6 px-2">
+                            <p class="text-xs text-zinc-400 mb-3">Vibration signal — last 4 hours</p>
+                            <svg viewBox="0 0 280 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full">
+                                <path class="signal-line" d="M0 35 C20 35 30 30 40 30 C50 30 55 32 65 32 C75 32 80 30 90 30 C100 30 105 28 115 28 C125 28 130 26 140 22 C150 18 155 10 165 5 C170 2 175 8 180 15 C185 22 190 28 200 32 C210 36 215 38 225 38 C240 38 260 36 280 34" stroke="#ef4444" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                <line x1="140" y1="0" x2="140" y2="60" stroke="#ef4444" stroke-width="1" stroke-dasharray="3 3" opacity="0.4"/>
+                                <text x="144" y="12" fill="#ef4444" font-size="8" font-family="monospace" opacity="0.8">spike</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ THE SOLUTION — centered, airy ============ -->
+    <section class="py-32 bg-[#f8f9fb]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto fade-in">
+                <p class="text-sm font-semibold text-accent uppercase tracking-widest mb-5">The Solution</p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-navy">
+                    Monitoring that thinks, diagnoses, and acts
+                </h2>
+                <p class="mt-5 text-lg text-zinc-500 leading-relaxed">
+                    Three capabilities, one platform. From detection to resolution — zero human steps.
+                </p>
+            </div>
+
+            <div class="mt-20 grid md:grid-cols-3 gap-10">
+                <div class="fade-in">
+                    <div class="w-14 h-14 bg-dpsi/10 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🔍</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy">Autonomous Detection</h3>
+                    <p class="mt-3 text-zinc-500 leading-relaxed text-[0.95rem]">
+                        24/7 monitoring with AI-learned baselines. EWMA, CUSUM, spike and drift detection catch what static thresholds miss entirely.
+                    </p>
+                </div>
+                <div class="fade-in" style="transition-delay: 0.1s;">
+                    <div class="w-14 h-14 bg-accent/10 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">🧠</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy">AI Diagnosis</h3>
+                    <p class="mt-3 text-zinc-500 leading-relaxed text-[0.95rem]">
+                        RAG-powered analysis that cites your actual manufacturer manuals. Explains <em>why</em>, not just <em>what</em> — with section references.
+                    </p>
+                </div>
+                <div class="fade-in" style="transition-delay: 0.2s;">
+                    <div class="w-14 h-14 bg-green-500/10 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-navy">Automated Action</h3>
+                    <p class="mt-3 text-zinc-500 leading-relaxed text-[0.95rem]">
+                        Work orders created in your CMMS with priority and diagnosis pre-filled. Email and SMS sent. No manual steps, ever.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS — split numbered ============ -->
+    <section class="py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center max-w-xl mx-auto fade-in mb-20">
+                <p class="text-sm font-semibold text-accent uppercase tracking-widest mb-5">How It Works</p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-navy">From sensor to work order in four steps</h2>
+            </div>
+
+            <div class="space-y-16">
+                <!-- Step 1 -->
+                <div class="grid lg:grid-cols-2 gap-16 items-center fade-in">
+                    <div class="lg:pr-8">
+                        <div class="text-7xl font-extrabold text-accent/10 leading-none mb-3">01</div>
+                        <h3 class="text-2xl font-bold text-navy">Connect Your Sensors</h3>
+                        <p class="mt-4 text-zinc-500 leading-relaxed">
+                            Drop in your API documentation. MaintIQ reads it, identifies your endpoints, and auto-configures signal ingestion — no custom integration work required.
+                        </p>
+                    </div>
+                    <div class="bg-zinc-50 rounded-2xl p-6 border border-zinc-200 font-mono text-sm">
+                        <p class="text-zinc-400 text-xs mb-3">→ Upload API doc</p>
+                        <p class="text-dpsi">Detected: AEMP Telematics v2</p>
+                        <p class="text-zinc-500 mt-1">Assets: <span class="text-navy font-semibold">6 found</span></p>
+                        <p class="text-zinc-500">Signals: <span class="text-navy font-semibold">vibration, temperature, pressure, rpm</span></p>
+                        <p class="text-green-600 mt-3 font-semibold">✓ Integration configured</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="grid lg:grid-cols-2 gap-16 items-center fade-in">
+                    <div class="order-2 lg:order-1 bg-zinc-50 rounded-2xl p-6 border border-zinc-200">
+                        <p class="text-zinc-400 text-xs font-mono mb-3">Baseline — PUMP-2471-A · Vibration</p>
+                        <svg viewBox="0 0 260 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full mb-3">
+                            <!-- baseline band -->
+                            <rect x="0" y="20" width="260" height="24" fill="#1d6aae" opacity="0.08" rx="2"/>
+                            <!-- normal signal -->
+                            <path d="M0 32 C15 30 30 34 45 32 C60 30 75 33 90 31 C105 29 120 33 135 32 C150 31 165 33 180 32 C195 31 210 33 225 31 C240 29 250 33 260 32" stroke="#1d6aae" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+                            <text x="4" y="18" fill="#1d6aae" font-size="7" font-family="sans-serif" opacity="0.7">Normal range</text>
+                        </svg>
+                        <p class="text-xs text-zinc-500">AI-learned from 30 days of your actual data</p>
+                    </div>
+                    <div class="order-1 lg:order-2 lg:pl-8">
+                        <div class="text-7xl font-extrabold text-accent/10 leading-none mb-3">02</div>
+                        <h3 class="text-2xl font-bold text-navy">AI Learns What Normal Looks Like</h3>
+                        <p class="mt-4 text-zinc-500 leading-relaxed">
+                            Statistical baselines are built from your actual equipment data — not manufacturer defaults. They adapt to seasonal patterns, load shifts, and equipment aging automatically.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="grid lg:grid-cols-2 gap-16 items-center fade-in">
+                    <div class="lg:pr-8">
+                        <div class="text-7xl font-extrabold text-accent/10 leading-none mb-3">03</div>
+                        <h3 class="text-2xl font-bold text-navy">Anomaly Detected → Diagnosis in Seconds</h3>
+                        <p class="mt-4 text-zinc-500 leading-relaxed">
+                            When deviation is detected, MaintIQ cross-correlates signals and consults your manufacturer documentation library to produce a specific, cited diagnosis — not a guess.
+                        </p>
+                    </div>
+                    <div class="bg-dpsi/5 border border-dpsi/20 rounded-2xl p-6">
+                        <p class="text-xs font-semibold text-dpsi uppercase tracking-wide mb-3">MaintIQ Diagnosis</p>
+                        <p class="text-navy font-medium text-sm leading-relaxed">
+                            "Bearing wear pattern detected. Vibration 3.2σ above baseline. Cross-correlated with temperature rise (+12°C).
+                        </p>
+                        <p class="text-navy font-medium text-sm mt-2 leading-relaxed">
+                            Per Grundfos CR 95 Service Manual, Section 4.2 — recommend inspection within 7 days before failure risk escalates."
+                        </p>
+                        <div class="mt-4 flex items-center gap-2">
+                            <span class="text-xs bg-amber-100 text-amber-700 font-semibold px-2.5 py-1 rounded-full">Severity: Medium</span>
+                            <span class="text-xs text-zinc-400">7-day window</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="grid lg:grid-cols-2 gap-16 items-center fade-in">
+                    <div class="order-2 lg:order-1 bg-zinc-50 rounded-2xl p-6 border border-zinc-200 font-mono text-sm">
+                        <p class="text-zinc-400 text-xs mb-3">iMaint CMMS · Work Order Created</p>
+                        <p class="text-navy font-semibold">WO #4821 — PUMP-2471-A Inspection</p>
+                        <p class="text-zinc-500 mt-2 font-sans text-xs leading-relaxed">Bearing wear detected. Inspect per Grundfos CR 95 §4.2. Priority: Medium. Due within 7 days.</p>
+                        <p class="text-green-600 mt-3 font-semibold">✓ Assigned to J. Harrington</p>
+                        <p class="text-green-600">✓ Email + SMS sent</p>
+                    </div>
+                    <div class="order-1 lg:order-2 lg:pl-8">
+                        <div class="text-7xl font-extrabold text-accent/10 leading-none mb-3">04</div>
+                        <h3 class="text-2xl font-bold text-navy">Work Order Created Automatically</h3>
+                        <p class="mt-4 text-zinc-500 leading-relaxed">
+                            The work order lands in your CMMS pre-filled: diagnosis, priority, recommended action, and due date. Notifications sent. Nothing left to do manually.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ THE DIFFERENCE — dark section ============ -->
+    <section class="py-32 bg-navy">
+        <div class="max-w-6xl mx-auto px-6 fade-in">
+            <div class="text-center max-w-xl mx-auto mb-16">
+                <p class="text-sm font-semibold text-accent uppercase tracking-widest mb-5">The Difference</p>
+                <h2 class="text-3xl sm:text-4xl font-bold text-white">Not just alerts. Answers.</h2>
+            </div>
+
+            <div class="space-y-5 max-w-4xl mx-auto">
+                <div class="grid md:grid-cols-2 gap-4 fade-in">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-red-400 uppercase tracking-wider mb-3">Traditional</p>
+                        <p class="text-white/70 font-mono text-sm">"Vibration high on PUMP-2471"</p>
+                    </div>
+                    <div class="bg-accent/10 border border-accent/30 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-accent uppercase tracking-wider mb-3">MaintIQ</p>
+                        <p class="text-white text-sm leading-relaxed">"Bearing wear detected per Grundfos CR 95, §4.2. Inspect within 7 days. Work order #4821 created and assigned."</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 fade-in">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-red-400 uppercase tracking-wider mb-3">Traditional</p>
+                        <p class="text-white/70 text-sm">Manual thresholds set once, never updated</p>
+                    </div>
+                    <div class="bg-accent/10 border border-accent/30 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-accent uppercase tracking-wider mb-3">MaintIQ</p>
+                        <p class="text-white text-sm leading-relaxed">AI-learned baselines that adapt to seasonal patterns, load changes, and equipment aging</p>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4 fade-in">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-red-400 uppercase tracking-wider mb-3">Traditional</p>
+                        <p class="text-white/70 text-sm">Alert → manual triage → manual work order</p>
+                    </div>
+                    <div class="bg-accent/10 border border-accent/30 rounded-xl p-6">
+                        <p class="text-xs font-semibold text-accent uppercase tracking-wider mb-3">MaintIQ</p>
+                        <p class="text-white text-sm leading-relaxed">Cited diagnosis + recommended action + auto work order — zero human steps</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INTEGRATION — airy grid ============ -->
+    <section class="py-32 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-20 items-center fade-in">
+                <div>
+                    <p class="text-sm font-semibold text-accent uppercase tracking-widest mb-5">Integration</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-navy">
+                        Works with what you already have
+                    </h2>
+                    <p class="mt-5 text-lg text-zinc-500 leading-relaxed">
+                        Not a rip-and-replace. MaintIQ connects to your existing sensors, gateways, and CMMS — typically in hours, not months.
+                    </p>
+                    <p class="mt-4 text-zinc-500 leading-relaxed">
+                        Upload your integration's API documentation and MaintIQ configures itself. OPC UA, REST APIs, AEMP Telematics, EtherNet/IP — if it has an API, MaintIQ can read it.
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 fade-in" style="transition-delay: 0.15s;">
+                    <div class="bg-zinc-50 rounded-2xl p-6 text-center border border-zinc-100 hover:border-dpsi/30 hover:shadow-md transition-all">
+                        <div class="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2 1 3 3 3h10c2 0 3-1 3-3V7c0-2-1-3-3-3H7C5 4 4 5 4 7z"/><path stroke-linecap="round" stroke-width="1.5" d="M9 12h6M12 9v6"/></svg>
+                        </div>
+                        <h3 class="font-bold text-navy text-sm">iMaint CMMS</h3>
+                        <p class="mt-1 text-xs text-zinc-400">Native integration</p>
+                    </div>
+                    <div class="bg-zinc-50 rounded-2xl p-6 text-center border border-zinc-100 hover:border-dpsi/30 hover:shadow-md transition-all">
+                        <div class="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-navy text-sm">OPC UA</h3>
+                        <p class="mt-1 text-xs text-zinc-400">Industrial standard</p>
+                    </div>
+                    <div class="bg-zinc-50 rounded-2xl p-6 text-center border border-zinc-100 hover:border-dpsi/30 hover:shadow-md transition-all">
+                        <div class="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-navy text-sm">REST APIs</h3>
+                        <p class="mt-1 text-xs text-zinc-400">Any sensor gateway</p>
+                    </div>
+                    <div class="bg-zinc-50 rounded-2xl p-6 text-center border border-zinc-100 hover:border-dpsi/30 hover:shadow-md transition-all">
+                        <div class="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-6 h-6 text-navy" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <h3 class="font-bold text-navy text-sm">Any CMMS</h3>
+                        <p class="mt-1 text-xs text-zinc-400">Open architecture</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section id="early-access" class="py-32 bg-[#f8f9fb]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="max-w-2xl mx-auto text-center fade-in">
+                <h2 class="text-3xl sm:text-4xl font-bold text-navy">Ready to upgrade your maintenance IQ?</h2>
+                <p class="mt-5 text-lg text-zinc-500 leading-relaxed">
+                    Join the MaintIQ early access program. Built on 35+ years of maintenance expertise — now with AI.
+                </p>
+
+                <form class="mt-10 flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="you@company.com"
+                        class="flex-1 px-5 py-3.5 rounded-lg bg-white border border-zinc-300 text-navy placeholder-zinc-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all"
+                        required>
+                    <button type="submit"
+                        class="bg-accent hover:bg-orange-600 text-white rounded-lg px-8 py-3.5 font-semibold transition-colors shadow-lg shadow-accent/20 whitespace-nowrap">
+                        Request Early Access
+                    </button>
+                </form>
+                <p class="mt-4 text-sm text-zinc-400">No commitment. We'll reach out to find a good fit.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-navy border-t border-white/10 py-10">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 opacity-60">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2C9.4 2 4 7.4 4 14c0 4.1 2.1 7.8 5.3 9.9L9 28c0 .6.4 1 1 1h12c.6 0 1-.4 1-1l-.3-4.1C25.9 21.8 28 18.1 28 14c0-6.6-5.4-12-12-12z" fill="white"/>
+                        <path d="M16 6c-1.5 0-2.8.8-3.5 2-.4.7-.5 1.5-.5 2.3 0 1.2.5 2.3 1.3 3.1l.7.7v2.9h4v-2.9l.7-.7c.8-.8 1.3-1.9 1.3-3.1 0-.8-.2-1.6-.5-2.3C18.8 6.8 17.5 6 16 6z" fill="#ed7322"/>
+                    </svg>
+                </span>
+                <span class="text-white/40 text-sm">MaintIQ by DPSI</span>
+            </div>
+            <p class="text-white/25 text-xs">© 2025 DPSI · maintiq.com · Intelligence for Maintenance</p>
+        </div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
